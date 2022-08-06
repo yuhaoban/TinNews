@@ -17,6 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.SavedNewsViewHolder> {
+
+    interface ItemCallback {
+
+        void onOpenDetails(Article article);
+        void onRemoveFavorite(Article article);
+    }
+
+    private ItemCallback itemCallback;
+
+    public void setItemCallback(ItemCallback itemCallback) {
+        this.itemCallback = itemCallback;
+    }
+
     // 1. Supporting data:
     private List<Article> articles = new ArrayList<>();
 
@@ -55,10 +68,13 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.Save
         Article article = articles.get(position);
         holder.authorTextView.setText(article.author);
         holder.descriptionTextView.setText(article.description);
+        holder.favoriteIcon.setOnClickListener(v -> itemCallback.onRemoveFavorite(article));
+        holder.itemView.setOnClickListener(v -> itemCallback.onOpenDetails(article));
     }
 
     @Override
     public int getItemCount() {
         return articles.size();
     }
+
 }

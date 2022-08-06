@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.laioffer.tinnews.databinding.FragmentSearchBinding;
@@ -41,6 +42,12 @@ public class SearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         SearchNewsAdapter newsAdapter = new SearchNewsAdapter();
+
+        newsAdapter.setItemCallback(article -> {
+            SearchFragmentDirections.ActionNavigationSearchToNavigationDetails direction = SearchFragmentDirections.actionNavigationSearchToNavigationDetails(article);
+            NavHostFragment.findNavController(SearchFragment.this).navigate(direction);
+        });
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         binding.newsResultsRecyclerView.setLayoutManager(gridLayoutManager);
         binding.newsResultsRecyclerView.setAdapter(newsAdapter);
